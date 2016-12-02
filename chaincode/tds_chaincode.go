@@ -106,7 +106,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.Init(stub, "init", args)
 	
 	} else if function == "init_tax" {									//create a new marble
-		return t.init_marble(stub, args)
+		return t.init_tax(stub, args)
 	}
 	fmt.Println("invoke did not find func: " + function)					//error
 
