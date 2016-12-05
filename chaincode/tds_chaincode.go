@@ -159,7 +159,7 @@ func (t *SimpleChaincode) init_tax(stub shim.ChaincodeStubInterface, args []stri
 
 	//   0       1       2     3           4
 	// "pan", "date", "source", "income" , tax
-	if len(args) != 4 {
+	if len(args) != 5 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 4")
 	}
 
