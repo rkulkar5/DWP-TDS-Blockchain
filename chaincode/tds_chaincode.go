@@ -24,6 +24,8 @@ import (
 	"fmt"
 	"strconv"
 	"encoding/json"
+	"crypto/rand"
+	"io"
 	
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
@@ -181,13 +183,21 @@ func (t *SimpleChaincode) init_tax(stub shim.ChaincodeStubInterface, args []stri
 		return nil, errors.New("5th argument must be a non-empty string")
 	}
 	
+	uuid, err := newUUID()
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+	}
+	fmt.Printf(" The uuid is: %s\n", uuid)
 	
-	str := `{"Pan": "` + args[0] + `", "Date": "` + args[1] + `", "Source": "` + args[2] + `", "income": "` + args[3] + `", "tax": "` + args[4] + `"}`
-	err = stub.PutState(args[0], []byte(str))								//store marble with id as key
+	
+	
+	str := `{"Pan": "` + args[0] + `", "Date": "` + args[1] + `", "Source": "` + args[2] + `", "Income": "` + args[3] + `", "Tax": "` + args[4] + `"}`
+	err = stub.PutState(uuid, []byte(str))								//store marble with id as key
 	if err != nil {
 		return nil, err
 	}
-		
+	
+	marbleIndexStr = args[0];
 	//get the marble index
 	marblesAsBytes, err := stub.GetState(marbleIndexStr)
 	if err != nil {
@@ -197,12 +207,67 @@ func (t *SimpleChaincode) init_tax(stub shim.ChaincodeStubInterface, args []stri
 	json.Unmarshal(marblesAsBytes, &marbleIndex)							//un stringify it aka JSON.parse()
 	
 	//append
-	marbleIndex = append(marbleIndex, args[0])								//add marble name to index list
+	marbleIndex = append(marbleIndex, uuid)								//add marble name to index list
 	fmt.Println("! marble index: ", marbleIndex)
 	jsonAsBytes, _ := json.Marshal(marbleIndex)
 	err = stub.PutState(marbleIndexStr, jsonAsBytes)						//store name of marble
 
 	fmt.Println("- end init tax")
 	return nil, nil
+}
+
+
+
+// newUUID generates a random UUID according to RFC 4122
+func newUUID() (string, error) {
+	uuid := make([]byte, 16)
+	n, err := io.ReadFull(rand.Reader, uuid)
+	if n != len(uuid) || err != nil {
+		return "", err
+	}
+	// variant bits; see section 4.1.1
+	uuid[8] = uuid[8]&^0xc0 | 0x80
+	// version 4 (pseudo-random); see section 4.1.3
+	uuid[6] = uuid[6]&^0xf0 | 0x40
+	return fmt.Sprintf("%x%x%x%x%x", uuid[0:4], uuid[4:6], uuid[6:8], uuid[8:10], uuid[10:]), nil
+}
+
+
+// ============================================================================================================================
+// Read - read a variable from chaincode state
+// ============================================================================================================================
+func (t *SimpleChaincode) readByPan(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+	var name, jsonResp string
+	var allTransactions []string
+	var err error
+
+	if len(args) != 1 {
+		return nil, errors.New("Incorrect number of arguments. Expecting name of the var to query")
+	}
+
+	uuids, err := stub.GetState(args[0])									//get the var from chaincode state
+	if err != nil {
+		jsonResp = "{\"Error\":\"Failed to get state for " + args[0] + "\"}"
+		return nil, errors.New(jsonResp)
+	}
+        
+	var uuidList []string
+	json.Unmarshal(uuids, &uuidList)
+	for i:= range uuidList{
+		
+		
+		panDetails, err := stub.GetState(uuidList[i])						//grab this marble
+		if err != nil {
+			return fail, errors.New("Failed to get marble")
+		}
+		res := Tax{}
+		json.Unmarshal(panDetails, &res)
+		
+		allTransactions = append(allTransactions, res)
+	}
+	
+	jsonAsBytes, _ := json.Marshal(allTransactions)
+	
+	return jsonAsBytes, nil													//send it onward
 }
 
