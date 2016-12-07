@@ -123,6 +123,8 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	// Handle different functions
 	if function == "read" {													//read a variable
 		return t.read(stub, args)
+	} else if function == "readAllByPan" {													//read a variable
+		return t.readAllByPan(stub, args)
 	}
 	fmt.Println("query did not find func: " + function)						//error
 
@@ -236,7 +238,7 @@ func newUUID() (string, error) {
 // ============================================================================================================================
 // Read - read a variable from chaincode state
 // ============================================================================================================================
-func (t *SimpleChaincode) readByPan(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SimpleChaincode) readAllByPan(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var name, jsonResp string
 	var allTransactions []string
 	var err error
