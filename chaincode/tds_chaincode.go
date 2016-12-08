@@ -262,7 +262,7 @@ func (t *SimpleChaincode) readAllByPan(stub shim.ChaincodeStubInterface, args []
 		if err != nil {
 			return fail, errors.New("Failed to get marble")
 		}
-		var res []String
+		var res []string
 		json.Unmarshal(panDetails, &res)
 		
 		allTransactions = append(allTransactions, res)
