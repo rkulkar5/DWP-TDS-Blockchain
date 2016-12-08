@@ -194,7 +194,9 @@ func (t *SimpleChaincode) init_tax(stub shim.ChaincodeStubInterface, args []stri
 	
 	
 	str := `{"Pan": "` + args[0] + `", "Date": "` + args[1] + `", "Source": "` + args[2] + `", "Income": "` + args[3] + `", "Tax": "` + args[4] + `"}`
-	err = stub.PutState(uuid, []byte(str))								//store marble with id as key
+	err = stub.PutState(uuid, []byte(str))
+	
+	//store marble with id as key
 	if err != nil {
 		return nil, err
 	}
@@ -203,7 +205,8 @@ func (t *SimpleChaincode) init_tax(stub shim.ChaincodeStubInterface, args []stri
 	//get the marble index
 	marblesAsBytes, err := stub.GetState(marbleIndexStr)
 	if err != nil {
-		return nil, errors.New("Failed to get marble index")
+		var empty []string
+		marblesAsBytes, _ := json.Marshal(empty)	
 	}
 	var marbleIndex []string
 	json.Unmarshal(marblesAsBytes, &marbleIndex)							//un stringify it aka JSON.parse()
