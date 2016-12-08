@@ -246,37 +246,22 @@ func newUUID() (string, error) {
 // Read - read a variable from chaincode state
 // ============================================================================================================================
 func (t *SimpleChaincode) readAllByPan(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	var jsonResp string
-	var err error
-	var allTaxes AllTaxes
-	var res Tax
-
-	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting name of the var to query")
-	}
-
-	uuids, err := stub.GetState(marbleIndexStr)									//get the var from chaincode state
-	if err != nil {
-		jsonResp = "{\"Error\":\"Failed to get state for " + args[0] + "\"}"
-		return nil, errors.New(jsonResp)
-	}
-        
-	var uuidList []string
-	json.Unmarshal(uuids, &uuidList)
-	for i:= range uuidList{
+	
+	var Allmarbles []string
+	marblesAsBytes, err := t.read(stub, args)
+	
+	var marbleIndex []string
+	json.Unmarshal(marblesAsBytes, &marbleIndex)								//un stringify it aka JSON.parse()
+	
+	//remove marble from index
+	for i,val := range marbleIndex{
 		
-		
-		panDetails, err := stub.GetState(uuidList[i])						//grab this marble
-		if err != nil {
-			return nil, nil
-		}
-		res := Tax{}
-		json.Unmarshal(panDetails, &res)
-		
-		allTaxes.AllPanTransactions[i] = res;
+		panDetails, err := t.read(stub, val)
+		json.Unmarshal(panDetails, &Allmarbles) 
+		Allmarbles.append(Allmarbles,panDetails)
 	}
 	
-	jsonAsBytes, _ := json.Marshal(res)
+	jsonAsBytes, _ := json.Marshal(Allmarbles)
 	
 	return jsonAsBytes, nil													//send it onward
 }
