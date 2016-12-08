@@ -239,7 +239,7 @@ func newUUID() (string, error) {
 // Read - read a variable from chaincode state
 // ============================================================================================================================
 func (t *SimpleChaincode) readAllByPan(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	
+	var jsonResp string
 	var allTransactions []string
 	var err error
 
