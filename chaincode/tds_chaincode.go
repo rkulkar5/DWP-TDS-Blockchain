@@ -254,11 +254,13 @@ func (t *SimpleChaincode) readAllByPan(stub shim.ChaincodeStubInterface, args []
 	json.Unmarshal(marblesAsBytes, &marbleIndex)								//un stringify it aka JSON.parse()
 	
 	//remove marble from index
-	for i,val := range marbleIndex{
+	for i:= range marbleIndex{
 		
-		panDetails, err := t.read(stub, val)
-		json.Unmarshal(panDetails, &Allmarbles) 
-		Allmarbles = append(Allmarbles,panDetails)
+		panDetails, err := t.read(stub, marbleIndex[i])
+		
+		var panDetailsStr []string
+		json.Unmarshal(panDetails, &panDetailsStr) 
+		Allmarbles = append(Allmarbles,panDetailsStr)
 	}
 	
 	jsonAsBytes, _ := json.Marshal(Allmarbles)
