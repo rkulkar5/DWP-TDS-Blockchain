@@ -38,11 +38,12 @@ var marbleIndexStr = "_marbleindex"				//name for the key/value that will store 
 var openTradesStr = "_opentrades"				//name for the key/value that will store all open trades
 
 type Tax struct{
-	Pan string `json:"pan"`					//the fieldtags are needed to keep case from bouncing around
-	Date string `json:"date"`
-	IncomeSource string `json:"source"`
-	Income string `json:"income"`
-	Tax string `json:"tax"`
+	UUID string `json:"uuid"`
+	Pan string `json:"Pan"`					//the fieldtags are needed to keep case from bouncing around
+	Date string `json:"Date"`
+	IncomeSource string `json:"Source"`
+	Income string `json:"Income"`
+	Tax string `json:"Tax"`
 }
 
 // ============================================================================================================================
@@ -264,7 +265,7 @@ func (t *SimpleChaincode) readAllByPan(stub shim.ChaincodeStubInterface, args []
 		if err != nil {
 			return nil, nil
 		}
-		var res string
+		res := Tax{}
 		json.Unmarshal(panDetails, &res)
 		
 		allTransactions = append(allTransactions, res)
