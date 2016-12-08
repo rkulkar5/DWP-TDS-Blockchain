@@ -202,14 +202,18 @@ func (t *SimpleChaincode) init_tax(stub shim.ChaincodeStubInterface, args []stri
 	}
 	
 	marbleIndexStr = args[0];
+	var marbleIndex []string
 	//get the marble index
 	marblesAsBytes, err := stub.GetState(marbleIndexStr)
 	if err != nil {
 		var empty []string
-		marblesAsBytes, _ := json.Marshal(empty)	
+		marblesAsBytes, _ := json.Marshal(empty)
+		json.Unmarshal(marblesAsBytes, &marbleIndex)
+	} else {
+		json.Unmarshal(marblesAsBytes, &marbleIndex)
 	}
-	var marbleIndex []string
-	json.Unmarshal(marblesAsBytes, &marbleIndex)							//un stringify it aka JSON.parse()
+	
+								//un stringify it aka JSON.parse()
 	
 	//append
 	marbleIndex = append(marbleIndex, uuid)								//add marble name to index list
