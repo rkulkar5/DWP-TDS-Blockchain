@@ -249,7 +249,7 @@ func (t *SimpleChaincode) readAllByPan(stub shim.ChaincodeStubInterface, args []
 		return nil, errors.New("Incorrect number of arguments. Expecting name of the var to query")
 	}
 
-	uuids, err := stub.GetState(args[0])									//get the var from chaincode state
+	uuids, err := stub.GetState(marbleIndexStr)									//get the var from chaincode state
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for " + args[0] + "\"}"
 		return nil, errors.New(jsonResp)
