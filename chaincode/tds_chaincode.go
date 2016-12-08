@@ -207,7 +207,8 @@ func (t *SimpleChaincode) init_tax(stub shim.ChaincodeStubInterface, args []stri
 	marblesAsBytes, err := stub.GetState(marbleIndexStr)
 	if err != nil {
 		var empty []string
-		marblesAsBytes, _ := json.Marshal(empty)	
+		marblesAsBytes, _ := json.Marshal(empty)
+		stub.PutState(marbleIndexStr, []byte(uuid))
 		fmt.Printf(" You should see this print for the very first  %s\n", marblesAsBytes)
 		
 	} 
