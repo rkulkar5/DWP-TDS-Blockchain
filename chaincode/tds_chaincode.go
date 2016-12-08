@@ -275,7 +275,7 @@ func (t *SimpleChaincode) readAllByPan(stub shim.ChaincodeStubInterface, args []
 		allTaxes.AllPanTransactions[i] = res;
 	}
 	
-	jsonAsBytes, _ := json.Marshal(allTaxes)
+	jsonAsBytes, _ := json.Marshal(res)
 	
 	return jsonAsBytes, nil													//send it onward
 }
