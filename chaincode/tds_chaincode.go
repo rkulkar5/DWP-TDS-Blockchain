@@ -193,7 +193,7 @@ func (t *SimpleChaincode) init_tax(stub shim.ChaincodeStubInterface, args []stri
 	
 	
 	
-	str := `{"Pan": "` + args[0] + `", "Date": "` + args[1] + `", "Source": "` + args[2] + `", "Income": "` + args[3] + `", "Tax": "` + args[4] + `"}`
+	str := `{"uuid: "`+uuid +`", Pan": "` + args[0] + `", "Date": "` + args[1] + `", "Source": "` + args[2] + `", "Income": "` + args[3] + `", "Tax": "` + args[4] + `"}`
 	err = stub.PutState(uuid, []byte(str))
 	
 	//store marble with id as key
