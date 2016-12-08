@@ -249,6 +249,7 @@ func (t *SimpleChaincode) readAllByPan(stub shim.ChaincodeStubInterface, args []
 	var jsonResp string
 	var err error
 	var allTaxes AllTaxes
+	var res Tax
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting name of the var to query")
