@@ -260,7 +260,7 @@ func (t *SimpleChaincode) readAllByPan(stub shim.ChaincodeStubInterface, args []
 		
 		panDetails, err := stub.GetState(uuidList[i])						//grab this marble
 		if err != nil {
-			return nil, nill
+			return nil, nil
 		}
 		var res string
 		json.Unmarshal(panDetails, &res)
