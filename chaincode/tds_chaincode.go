@@ -247,7 +247,6 @@ func newUUID() (string, error) {
 // ============================================================================================================================
 func (t *SimpleChaincode) readAllByPan(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var jsonResp string
-	var allTransactions []string
 	var err error
 	var allTaxes AllTaxes
 
