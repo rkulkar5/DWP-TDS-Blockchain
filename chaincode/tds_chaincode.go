@@ -46,6 +46,10 @@ type Tax struct{
 	Tax string `json:"Tax"`
 }
 
+type AllTaxes struct{
+	AllPanTransactions []Tax `json:"all_taxes"`
+}
+
 // ============================================================================================================================
 // Main
 // ============================================================================================================================
@@ -245,6 +249,7 @@ func (t *SimpleChaincode) readAllByPan(stub shim.ChaincodeStubInterface, args []
 	var jsonResp string
 	var allTransactions []string
 	var err error
+	var allTaxes AllTaxes
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting name of the var to query")
@@ -268,10 +273,10 @@ func (t *SimpleChaincode) readAllByPan(stub shim.ChaincodeStubInterface, args []
 		res := Tax{}
 		json.Unmarshal(panDetails, &res)
 		
-		allTransactions = append(allTransactions, res)
+		allTaxes.AllPanTransactions[i] = res;
 	}
 	
-	jsonAsBytes, _ := json.Marshal(allTransactions)
+	jsonAsBytes, _ := json.Marshal(allTaxes)
 	
 	return jsonAsBytes, nil													//send it onward
 }
