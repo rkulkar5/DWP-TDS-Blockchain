@@ -206,10 +206,13 @@ func (t *SimpleChaincode) init_tax(stub shim.ChaincodeStubInterface, args []stri
 	//get the marble index
 	marblesAsBytes, err := stub.GetState(marbleIndexStr)
 	if err != nil {
-		marblesAsBytes = "";
+		var empty []string
+		marblesAsBytes, _ := json.Marshal(empty)	
 		fmt.Printf(" You should see this print for the very first  %s\n", marblesAsBytes)
 		
 	} 
+	
+	fmt.Printf(" *********************UUID is *******  %s\n", uuid)
 	
 	json.Unmarshal(marblesAsBytes, &marbleIndex)
 										//un stringify it aka JSON.parse()
