@@ -258,7 +258,7 @@ func (t *SimpleChaincode) readAllByPan(stub shim.ChaincodeStubInterface, args []
 		
 		panDetails, err := t.read(stub, val)
 		json.Unmarshal(panDetails, &Allmarbles) 
-		Allmarbles.append(Allmarbles,panDetails)
+		Allmarbles = append(Allmarbles,panDetails)
 	}
 	
 	jsonAsBytes, _ := json.Marshal(Allmarbles)
