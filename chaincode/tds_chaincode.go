@@ -43,7 +43,7 @@ type Tax struct{
 	Date string `json:"Date"`
 	IncomeSource string `json:"Source"`
 	Income string `json:"Income"`
-	Tax string `json:"Tax"`
+	
 }
 
 type AllTaxes struct{
@@ -186,9 +186,7 @@ func (t *SimpleChaincode) init_tax(stub shim.ChaincodeStubInterface, args []stri
 		return nil, errors.New("4th argument must be a non-empty string")
 	}
 	
-	if len(args[4]) <= 0 {
-		return nil, errors.New("5th argument must be a non-empty string")
-	}
+	
 	
 	uuid, err := newUUID()
 	if err != nil {
@@ -198,7 +196,7 @@ func (t *SimpleChaincode) init_tax(stub shim.ChaincodeStubInterface, args []stri
 	
 	
 	
-	str := `{"uuid": "`+uuid +`", "Pan": "` + args[0] + `", "Date": "` + args[1] + `", "Source": "` + args[2] + `", "Income": "` + args[3] + `", "Tax": "` + args[4] + `"}`
+	str := `{"uuid": "`+uuid +`", "Pan": "` + args[0] + `", "Date": "` + args[1] + `", "Source": "` + args[2] + `", "Income": "` + args[3] + `"}`
 	err = stub.PutState(uuid, []byte(str))
 	
 	//store marble with id as key
